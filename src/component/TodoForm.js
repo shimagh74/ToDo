@@ -1,6 +1,6 @@
 import React from "react";
 import ListShow from "./ListShow";
-const uuidv1 = require('uuid/v1')
+const uuidv1 = require("uuid/v1");
 
 class TodoForm extends React.Component {
   constructor(props) {
@@ -8,7 +8,8 @@ class TodoForm extends React.Component {
     this.state = {
       text: "",
       todoList: [],
-      showList: "All"
+      showList: "All",
+      valueinput: ""
     };
   }
 
@@ -18,32 +19,23 @@ class TodoForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     this.setState({
-      todoList: [{
-        text: this.state.text,
-        done: false,
-        id: uuidv1()
-      },
+      todoList: [
+        {
+          text: this.state.text,
+          done: false,
+          id: uuidv1()
+        },
 
-      ...this.state.todoList
+        ...this.state.todoList
       ],
       text: ""
     });
   };
 
-
   handleSearch = e => {
     let value = e.target.value;
-    this.setState.text = value;
-    console.log(this.state.text)
-    // this.setState(state => ({
-    //     searchList :  state.todoList.filter((todo) => {
-    //         if (todo.text.includes(e.target.value))
-    //             return true;
-    //         return false;
-    //     })
-    // }));
+    this.setState({ valueinput: value });
   };
-
   onDone = index => {
     this.setState(state => ({
       todoList: state.todoList.map((todo, indexTodo) => {
@@ -64,49 +56,61 @@ class TodoForm extends React.Component {
     else newTodo = this.state.todoList.filter(todo => !todo.done);
     return (
       <>
-        <div className="container">
-          <div className="row">
-            <div className="App col-4">
-              <form onSubmit={this.handleSubmit}>
-                <input class="form-control" value={this.state.text} onChange={this.handleChange} placeholder="وارد کردن تکلیف جدید"></input>
-                <button class="btn btn-success" type="submit">TodoAdd</button>
-              </form>
-              
-              </div>
-              
+      <div className="container">
+        <div className="row">
 
-              <div className="col-4">
-              <button class="btn btn-primary" onClick={() => this.setState({ showList: "All" })}>همه</button>{" "}
-              <button class="btn btn-primary" onClick={() => this.setState({ showList: "Done" })}>انجام شده</button>{" "}
-              <button class="btn btn-primary" onClick={() => this.setState({ showList: "unDone" })}>انجام نشده</button>
-              {/* .filter((todo, index)=>(
-
-if (!this.state.text)
-  return todo;
-
-if (this.state.text){
-  if(this.state.text==todo){
-    return todo;
-  }
-}
-
-)) */}
-              {newTodo.map((todo, index) => (
-                <ListShow
-                  key={index}
-                  todo={todo}
-                  handleDone={() => this.onDone(index)}
-                />
-              ))}
-            
-            </div>
-            <div className="col-4">
-              <input class="form-control" value={this.state.todo} onChange={this.handleSearch} type="text" placeholder="...جستجو" ></input>
-
-              </div>
+ <div className="App">
+          <form onSubmit={this.handleSubmit}>
+            <input
+              value={this.state.text}
+              onChange={this.handleChange}
+              placeholder="وارد کردن تکلیف جدید"
+            ></input>
+            <button class="btn btn-success" type="submit">TodoAdd</button>
+            <input
+              value={this.state.valueinput}
+              onChange={this.handleSearch}
+              type="search"
+            ></input>
+            <button class="btn btn-success" type="submit">...جستجو</button>
+          </form>
           </div>
-        </div>
+          <div className="col-4">
+          {newTodo
+            .filter(todo => {
+              if (this.state.valueinput) {
+                let _todo = this.state.valueinput;
 
+                if (_todo === todo.text) return todo;
+                return null;
+              }
+              if (!this.state.valueinput) {
+                return todo;
+              }
+              return null;
+            })
+            .map((todo, index) => (
+              <ListShow
+                key={index}
+                todo={todo}
+                handleDone={() => this.onDone(index)}
+              />
+            ))}
+        </div>
+        <div className="col-4">
+          <button class="btn btn-primary" onClick={() => this.setState({ showList: "All" })}>
+            همه
+          </button>{" "}
+          <button class="btn btn-primary" onClick={() => this.setState({ showList: "Done" })}>
+            انجام شده
+          </button>{" "}
+          <button class="btn btn-primary" onClick={() => this.setState({ showList: "unDone" })}>
+            انجام نشده
+          </button>
+        </div>
+        </div>
+      </div>
+       
       </>
     );
   }
