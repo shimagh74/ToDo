@@ -36,3 +36,39 @@
     transform: rotate(360deg);
   }
 }
+.done{
+  color: red;
+  font-size: 15px;
+}
+.trash{
+  display: none;
+}
+.text-style{
+  list-style-type: none;
+}
+.box{
+  border: 1px solid #76076d;
+  width: 500px;
+  height: auto;
+  text-align: center;
+  background: antiquewhite;
+  border-radius: 5px;
+  padding-top: 20px;
+  padding-bottom: 60px;
+
+}
+.top-box{
+  padding-top: 20px;
+}
+
+
+input{
+  text-align: right;
+  margin-top: 20px;
+}
+button{
+  margin-top: 20px;
+}
+form{
+  display: flex;
+}
